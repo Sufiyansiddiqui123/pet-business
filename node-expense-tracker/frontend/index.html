@@ -1,0 +1,195 @@
+
+<kbd></kbd> tracker and ms<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Inventory Management</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    input, button { margin: 5px; padding: 8px; }
+    .hidden { display: none; }
+    table { border-collapse: collapse; width: 100%; margin-top: 20px; }
+    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+    th { background-color: #f2f2f2; }
+  </style>
+</head>
+<body>
+  <h1>Inventory Management</h1>
+
+  <div id="auth-section">
+    <h2>Register</h2>
+    <input type="text" id="reg-username" placeholder="Username" />
+    <input type="password" id="reg-password" placeholder="Password" />
+    <button onclick="register()">Register</button>
+
+    <h2>Login</h2>
+    <input type="text" id="login-username" placeholder="Username" />
+    <input type="password" id="login-password" placeholder="Password" />
+    <button onclick="login()">Login</button>
+  </div>
+
+  <div id="inventory-section" class="hidden">
+    <button onclick="logout()">Logout</button>
+    <h2>Add Inventory Item</h2>
+    <input type="text" id="item-name" placeholder="Name" />
+    <input type="number" id="item-quantity" placeholder="Quantity" />
+    <input type="number" step="0.01" id="item-price" placeholder="Price" />
+    <button onclick="addItem()">Add Item</button>
+
+    <h2>Inventory List</h2>
+    <table id="inventory-table">
+      <thead>
+        <tr><th>ID</th><th>Name</th><th>Quantity</th><th>Price</th><th>Actions</th></tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <script>
+    let token = null;
+
+    function showMessage(msg) {
+      alert(msg);
+    }
+
+    async function register() {
+      const username = document.getElementById('reg-username').value;
+      const password = document.getElementById('reg-password').value;
+      if (!username || !password) {
+        showMessage('Please enter username and password');
+        return;
+      }
+      try {
+        const res = await fetch('http://localhost:3000/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, password }),
+        });
+        const data = await res.json();
+        if (res.ok) {
+          showMessage('Registration successful. Please login.');
+        } else {
+          showMessage(data.message || 'Registration failed');
+        }
+      } catch (err) {
+        showMessage('Error: ' + err.message);
+      }
+    }
+
+    async function login() {
+      const username = document.getElementById('login-username').value;
+      const password = document.getElementById('login-password').value;
+      if (!username || !password) {
+        showMessage('Please enter username and password');
+        return;
+      }
+      try {
+        const res = await fetch('http://localhost:3000/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, password }),
+        });
+        const data = await res.json();
+        if (res.ok) {
+          token = data.token;
+          document.getElementById('auth-section').classList.add('hidden');
+          document.getElementById('inventory-section').classList.remove('hidden');
+          loadInventory();
+        } else {
+          showMessage(data.message || 'Login failed');
+        }
+      } catch (err) {
+        showMessage('Error: ' + err.message);
+      }
+    }
+
+    async function loadInventory() {
+      try {
+        const res = await fetch('http://localhost:3000/inventory', {
+          headers: { Authorization: 'Bearer ' + token },
+        });
+        const data = await res.json();
+        if (res.ok) {
+          const tbody = document.querySelector('#inventory-table tbody');
+          tbody.innerHTML = '';
+          data.forEach(item => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = \`
+              <td>\${item.id}</td>
+              <td>\${item.name}</td>
+              <td>\${item.quantity}</td>
+              <td>\${item.price.toFixed(2)}</td>
+              <td>
+                <button onclick="deleteItem(\${item.id})">Delete</button>
+              </td>
+            \`;
+            tbody.appendChild(tr);
+          });
+        } else {
+          showMessage(data.message || 'Failed to load inventory');
+        }
+      } catch (err) {
+        showMessage('Error: ' + err.message);
+      }
+    }
+
+    async function addItem() {
+      const name = document.getElementById('item-name').value;
+      const quantity = parseInt(document.getElementById('item-quantity').value);
+      const price = parseFloat(document.getElementById('item-price').value);
+      if (!name || isNaN(quantity) || isNaN(price)) {
+        showMessage('Please enter valid item details');
+        return;
+      }
+      try {
+        const res = await fetch('http://localhost:3000/inventory', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + token,
+          },
+          body: JSON.stringify({ name, quantity, price }),
+        });
+        const data = await res.json();
+        if (res.ok) {
+          showMessage('Item added');
+          document.getElementById('item-name').value = '';
+          document.getElementById('item-quantity').value = '';
+          document.getElementById('item-price').value = '';
+          loadInventory();
+        } else {
+          showMessage(data.message || 'Failed to add item');
+        }
+      } catch (err) {
+        showMessage('Error: ' + err.message);
+      }
+    }
+
+    async function deleteItem(id) {
+      if (!confirm('Are you sure you want to delete this item?')) return;
+      try {
+        const res = await fetch(\`http://localhost:3000/inventory/\${id}\`, {
+          method: 'DELETE',
+          headers: { Authorization: 'Bearer ' + token },
+        });
+        const data = await res.json();
+        if (res.ok) {
+          showMessage('Item deleted');
+          loadInventory();
+        } else {
+          showMessage(data.message || 'Failed to delete item');
+        }
+      } catch (err) {
+        showMessage('Error: ' + err.message);
+      }
+    }
+
+    function logout() {
+      token = null;
+      document.getElementById('auth-section').classList.remove('hidden');
+      document.getElementById('inventory-section').classList.add('hidden');
+    }
+  </script>
+</body>
+</html>

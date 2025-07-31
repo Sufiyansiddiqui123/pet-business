@@ -1,0 +1,255 @@
+/* Cat Gallery Section */
+.cat-gallery {
+    padding: 5rem 0;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.cat-gallery .section-header h2,
+.cat-gallery .section-header p {
+    color: white;
+}
+
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+}
+
+.gallery-item {
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255,255,255,0.2);
+}
+
+.gallery-item:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+}
+
+.gallery-item img {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    display: block;
+}
+
+/* Cat Information Section */
+.cat-info {
+    padding: 5rem 0;
+    background: #f8f9fa;
+}
+
+.cat-info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 3rem;
+    margin-bottom: 3rem;
+}
+
+.cat-breed-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+}
+
+.cat-breed-card:hover {
+    transform: translateY(-5px);
+}
+
+.cat-breed-card h3 {
+    font-size: 2rem;
+    color: #ff6b6b;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.cat-breed-card h4 {
+    font-size: 1.3rem;
+    color: #333;
+    margin: 1.5rem 0 1rem;
+}
+
+.cat-breed-card ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.cat-breed-card ul li {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #eee;
+    color: #666;
+}
+
+.cat-breed-card ul li:last-child {
+    border-bottom: none;
+}
+
+.cat-breed-card ul li strong {
+    color: #333;
+}
+
+.health-terms-table {
+    background: white;
+    border-radius: 20px;
+    padding: 2rem;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    overflow-x: auto;
+}
+
+.health-terms-table h3 {
+    font-size: 2rem;
+    color: #ff6b6b;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.health-terms-table table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+}
+
+.health-terms-table th,
+.health-terms-table td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+.health-terms-table th {
+    background: linear-gradient(45deg, #ff6b6b, #ffa500);
+    color: white;
+    font-weight: 600;
+}
+
+.health-terms-table tr:hover {
+    background: #f8f9fa;
+}
+
+.tips-section {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    padding: 2rem;
+    border-radius: 20px;
+    margin-top: 2rem;
+}
+
+.tips-section h3 {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.tips-section ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.tips-section ul li {
+    padding: 0.8rem 0;
+    padding-left: 2rem;
+    position: relative;
+}
+
+.tips-section ul li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: #ffa500;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+/* Admin Styles */
+.admin-section {
+    padding: 5rem 0;
+    min-height: 100vh;
+    background: #f8f9fa;
+}
+
+.admin-login-form {
+    max-width: 400px;
+    margin: 0 auto;
+    background: white;
+    padding: 2rem;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.admin-upload-form {
+    background: white;
+    padding: 2rem;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    margin-bottom: 2rem;
+}
+
+.admin-upload-form h3 {
+    color: #ff6b6b;
+    margin-bottom: 1rem;
+}
+
+.admin-gallery-management {
+    background: white;
+    padding: 2rem;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    margin-bottom: 2rem;
+}
+
+.admin-gallery-management h3 {
+    color: #ff6b6b;
+    margin-bottom: 1rem;
+}
+
+.admin-gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+}
+
+.admin-gallery-item {
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    overflow: hidden;
+    background: #f8f9fa;
+}
+
+.admin-gallery-item img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+}
+
+.admin-gallery-item-info {
+    padding: 1rem;
+}
+
+.admin-gallery-item-info p {
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.admin-logout {
+    text-align: center;
+}
+
+.btn-danger {
+    background: linear-gradient(45deg, #ff4757, #ff3742);
+    color: white;
+}
+
+.btn-danger:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(255,71,87,0.4);
+}
